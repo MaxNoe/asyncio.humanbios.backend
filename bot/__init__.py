@@ -4,10 +4,18 @@ It echoes any incoming text messages.
 """
 
 import logging
+from aiogram import Bot, Dispatcher, types
+from dotenv import load_dotenv
+import os
 
-from aiogram import Bot, Dispatcher, executor, types
+load_dotenv()
 
-API_TOKEN = '<hier-einfuegen>'
+
+try:
+    API_TOKEN = os.environ['API_TOKEN']
+except KeyError:
+    raise KeyError('Please add API_TOKEN="<token>" in the .env file or as env variable')
+
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
@@ -37,8 +45,5 @@ async def echo(message: types.Message):
     # old style:
     # await bot.send_message(message.chat.id, message.text)
     answer = f'ich habe {message.text} nicht verstanden, \n versuche: meerschweinchen, meer, schwein'
-    #await message.answer(answer)
+    # await message.answer(answer)
     await message.forward('@humanbios0k')
-
-if __name__ == '__main__':
-    executor.start_polling(dp, skip_updates=True)
